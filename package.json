@@ -1,0 +1,25 @@
+{
+  "name": "BAmazon",
+  "version": "1.0.0",
+  "description": "MySQL Homework Assignment",
+  "main": "bamazonCustomer.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tglennd90/BAmazon.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/tglennd90/BAmazon/issues"
+  },
+  "homepage": "https://github.com/tglennd90/BAmazon#readme",
+  "dependencies": {
+    "console.table": "^0.10.0",
+    "inquirer": "^7.1.0",
+    "mysql": "^2.18.1"
+  }
+}
