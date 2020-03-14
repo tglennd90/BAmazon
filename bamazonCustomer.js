@@ -40,13 +40,13 @@ function loadProducts() {
     });
 }
 
-// Prompt the customer for a product ID
+
 function promptCustomerForItem(inventory) {
-    // Prompts user for what they would like to purchase
+
     inquirer.prompt([
         {
             type: "input",
-            message: "What is the ID of the item you would like to purchase?",
+            message: "\u001b[1;33m What is the ID of the item you would like to purchase?",
             name: "product"
         }
     ]).then(function (answer) {
@@ -54,35 +54,41 @@ function promptCustomerForItem(inventory) {
         connection.query("SELECT * FROM products WHERE item_id=?", item, function (err, res) {
             if (err) throw err;
             if (res.length === 0) {
-                console.log("Please enter a valid Product ID")
+                console.log("\u001b[1;31m Please enter a valid Product ID")
                 promptCustomerForItem();
             } else {
                 inquirer.prompt([
                     {
                         type: "input",
-                        message: "How many would you like to purchase?",
+                        message: "\u001b[1;33m How many would you like to purchase?",
                         name: "quantity"
                     }
                 ]).then(function (answer2) {
                     var quantity = answer2.quantity;
 
                     if (quantity > res[0].stock_quantity) {
-                        console.log("We don't have enough for that, but we can sell you " + res[0].stock_quantity + " of those if you are interested!")
-
+                        console.log("");
+                        console.log("\u001b[1;31m We don't have enough for that, but we can sell you " + res[0].stock_quantity + " of those if you are interested!")
+                        console.log("");
                         promptCustomerForItem();
-                    } else {    
+                    } else {
                         var total = quantity * res[0].price;
 
                         console.log("");
-                        console.log("You purchased " + quantity + " " + res[0].product_name + " for $" + total + "!");
+                        console.log("\u001b[1;32m You purchased " + quantity + " " + res[0].product_name + " for $" + total + "!");
 
                         var newQuantity = res[0].stock_quantity - quantity;
+
+                        connection.query(
+                            "UPDATE products SET product_sales = " + total + " WHERE item_id = " + item, function (err, res) {
+                                if (err) throw err;
+                            }
+                        )
 
                         connection.query(
                             "UPDATE products SET stock_quantity = " + newQuantity + " WHERE item_id = " + item, function (err, res) {
                                 if (err) throw err;
                                 console.log("");
-
                                 checkIfShouldExit();
                             }
                         )
@@ -90,7 +96,6 @@ function promptCustomerForItem(inventory) {
                 })
             }
         })
-
     }
     );
 }
@@ -100,12 +105,12 @@ function checkIfShouldExit() {
     inquirer.prompt([
         {
             type: "input",
-            message: "Want to keep shopping?",
+            message: "\u001b[1;35m Want to keep shopping?",
             name: "quit"
         }
     ]).then(function (answer3) {
-        var test = answer3.quit;
-        if (test === "yes") {
+        var check = answer3.quit;
+        if (check === "yes") {
             loadProducts();
         } else {
             process.exit(0);
