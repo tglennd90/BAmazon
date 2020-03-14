@@ -111,6 +111,7 @@ function checkIfShouldExit() {
     ]).then(function (answer3) {
         var check = answer3.quit;
         if (check === "yes") {
+            console.log("");
             loadProducts();
         } else {
             process.exit(0);
